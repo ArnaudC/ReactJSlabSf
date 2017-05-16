@@ -26,7 +26,7 @@ class MovieDetail extends Component {
             return (<div className="movieDetail">
                     <div className="movieDetail__inner">
                         <div className="movieMedia">
-                            <img src={movie.img} alt={movie.title}></img>
+                            <img src={movie.img} alt={movie.title} width="200px" height="300px"></img>
                         </div>
                         <div className="movieDescription">
                             <div className="movieDescription__title">Titre du film : {movie.title} </div>

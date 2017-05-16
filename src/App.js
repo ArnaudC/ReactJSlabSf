@@ -11,26 +11,33 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    // this.getMovieList();
-    this.state = { movie: dataJson[0],
-          movieList: dataJson,
+    this.state = {
+      movie: dataJson[0],
+      movieList: [],
       isConnected: false
     };
+    this.getMovieList(this);
     this.handleMovieClick = this.handleMovieClick.bind(this);
     this.handleConnectedClick = this.handleConnectedClick.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.handleAddMovie = this.handleAddMovie.bind(this);
     this.onDeleteMovie = this.onDeleteMovie.bind(this);
   }
-
-// getMovieList(){
-//    return $.getJSON('https://sfreact.azurewebsites.net/api/Movies/1')
-//       .then((data) => {
-//         this.setState({ 
-//           movie: data[0],
-//           movieList: data });
-//       }); 
-// }
+  getMovieList(me) {
+    // https://sfreact.azurewebsites.net/api/Movies/
+    // http://localhost:49987/api/Movies
+    fetch('https://sfreact.azurewebsites.net/api/Movies/')
+    .then(response => response.json())
+      .then(data => {
+        this.setState({
+          movie: data[0],
+          movieList: data
+        });
+      })
+      .catch(function(error) {
+        console.log(error)
+      });
+  }
 
 handleAddMovie()
 { 
