@@ -70,7 +70,7 @@ class App extends Component {
   }
 
   postMovie(movie) {
- return fetch('https://sfreact.azurewebsites.net/api/Movies/' + id, {
+ return fetch('https://sfreact.azurewebsites.net/api/Movies/', {
         method: 'POST',
         body: {movie: movie}
     })
@@ -143,8 +143,6 @@ handleAddMovie()
   }
 
   onInputChange(event, movie) {
-    const target = event.target;
-    const value = target.value;
     this.postMovie(movie);
   }
 
