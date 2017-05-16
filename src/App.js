@@ -69,6 +69,36 @@ class App extends Component {
       });
   }
 
+  postMovie(movie) {
+ return fetch('https://sfreact.azurewebsites.net/api/Movies/' + id, {
+        method: 'POST',
+        body: {movie: movie}
+    })
+    .then(response => response.json())
+    .then(newlist => {
+      this.setState({
+        movie: newlist.length === 0 ?
+          {
+              url: "",
+              stars: 2.5,
+              img: "",
+              title: "",
+              releaseYear: "",
+              genre: "",
+              duration: "",
+              starring: "",
+              realisator: "",
+              synopsis: "",
+              id: null
+          } : newlist[0],
+        movieList: newlist
+      });
+    })
+    .catch(function(error) {
+      console.log(error)
+    });
+  }
+
 handleAddMovie()
 {
   var movie =
@@ -115,29 +145,7 @@ handleAddMovie()
   onInputChange(event, movie) {
     const target = event.target;
     const value = target.value;
-    var movieList = null;
-
-    if (movie.id === null)
-    {
-      movie.id = new Date();
-      movieList = this.state.movieList;
-      movieList.push(movie);
-      this.setState(
-        { "movieList": movieList }
-      )
-    }
-    else
-    {
-      movieList = this.state.movieList.map(m => {
-      if (m.id === movie.id) {
-        m[target.name] = value;
-      }
-      return m;
-    });
-    }
-    this.setState(
-      { "movieList": movieList }
-    )
+    this.postMovie(movie);
   }
 
   render() {
