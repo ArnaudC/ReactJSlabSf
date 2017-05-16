@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
 import Stars from './stars';
 
 class MovieDetail extends Component {
@@ -20,10 +18,11 @@ class MovieDetail extends Component {
     }
 
     render() {
+        var res = <div></div>;
         var movie = this.props.movie;
 
         if (!this.props.isConnected) {
-            return (<div className="movieDetail">
+            res = (<div className="movieDetail">
                     <div className="movieDetail__inner">
                         <div className="movieMedia">
                             <img src={movie.img} alt={movie.title} width="200px" height="300px"></img>
@@ -52,7 +51,7 @@ class MovieDetail extends Component {
             )
         }
         else {
-            return (
+            res = (
                 <div className="movieDetail">
                     <form>
                         <label>
@@ -89,6 +88,8 @@ class MovieDetail extends Component {
                 </div>
             )
         };
+
+        return res;
     }
 }
 

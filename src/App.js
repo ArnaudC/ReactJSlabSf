@@ -4,8 +4,6 @@ import MovieDetail from './detail.movie';
 import './App.css';
 import dataJson from './list-movie.json';
 import Connexion from './connexion';
-import $ from 'jquery';
-
 
 class App extends Component {
 
@@ -22,11 +20,13 @@ class App extends Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.handleAddMovie = this.handleAddMovie.bind(this);
     this.onDeleteMovie = this.onDeleteMovie.bind(this);
+    this.getMovieList = this.getMovieList.bind(this);
+    this.deleteMovie = this.deleteMovie.bind(this);
   }
-  getMovieList(me) {
+  getMovieList() {
     // https://sfreact.azurewebsites.net/api/Movies/
     // http://localhost:49987/api/Movies
-    fetch('https://sfreact.azurewebsites.net/api/Movies/')
+    return fetch('https://sfreact.azurewebsites.net/api/Movies/')
     .then(response => response.json())
       .then(data => {
         this.setState({
@@ -39,8 +39,38 @@ class App extends Component {
       });
   }
 
+  deleteMovie(id, newlist) {
+    return fetch('https://sfreact.azurewebsites.net/api/Movies/' + id, {
+        method: 'DELETE',
+        body: {}
+    })
+    .then(response => response.json())
+      .then(data => {
+        this.setState({
+          movie: data.length === 0 ?
+          {
+              url: "",
+              stars: 2.5,
+              img: "",
+              title: "",
+              releaseYear: "",
+              genre: "",
+              duration: "",
+              starring: "",
+              realisator: "",
+              synopsis: "",
+              id: null
+          } : newlist[0],
+          movieList:newlist
+        });
+      })
+      .catch(function(error) {
+        console.log(error)
+      });
+  }
+
 handleAddMovie()
-{ 
+{
   var movie =
   {
         url: "",
@@ -77,36 +107,18 @@ handleAddMovie()
     var newlist = this.state.movieList.filter(m => {
       return(m.id !== movie.id);
     });
-    console.log(newlist);
-    this.setState(
-        {
-          "movieList": newlist,
-          "movie": newlist.length === 0 ?
-          {
-              url: "",
-              stars: 2.5,
-              img: "",
-              title: "",
-              releaseYear: "",
-              genre: "",
-              duration: "",
-              starring: "",
-              realisator: "",
-              synopsis: "",
-              id: null
-          } : newlist[0]
-        }
-      )
+    this.deleteMovie(movie.id, newlist);
   }
 
   onInputChange(event, movie) {
     const target = event.target;
     const value = target.value;
+    var movieList = null;
 
     if (movie.id === null)
     {
       movie.id = new Date();
-      var movieList = this.state.movieList;
+      movieList = this.state.movieList;
       movieList.push(movie);
       this.setState(
         { "movieList": movieList }
@@ -114,7 +126,7 @@ handleAddMovie()
     }
     else
     {
-      var movieList = this.state.movieList.map(m => {
+      movieList = this.state.movieList.map(m => {
       if (m.id === movie.id) {
         m[target.name] = value;
       }
