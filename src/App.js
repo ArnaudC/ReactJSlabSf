@@ -47,7 +47,7 @@ class App extends Component {
     .then(response => response.json())
       .then(data => {
         this.setState({
-          movie: data.length === 0 ?
+          movie: newlist.length === 0 ?
           {
               url: "",
               stars: 2.5,
@@ -107,7 +107,9 @@ handleAddMovie()
     var newlist = this.state.movieList.filter(m => {
       return(m.id !== movie.id);
     });
-    this.deleteMovie(movie.id, newlist);
+    if (!!movie.id) {
+      this.deleteMovie(movie.id, newlist);
+    }
   }
 
   onInputChange(event, movie) {
