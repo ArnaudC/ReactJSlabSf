@@ -70,11 +70,18 @@ class App extends Component {
   }
 
   postMovie(movie) {
- return fetch('https://sfreact.azurewebsites.net/api/Movies/', {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    // var data = new FormData();
+    // data.append("json", JSON.stringify(movie));
+    fetch('https://sfreact.azurewebsites.net/api/Movies/', {
         method: 'POST',
-        body: {movie: movie}
+        body: movie
+        ,headers: myHeaders
     })
-    .then(response => response.json())
+    .then(response => {
+      response.json()
+    })
     .then(newlist => {
       this.setState({
         movie: newlist.length === 0 ?
